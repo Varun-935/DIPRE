@@ -262,3 +262,87 @@ button:disabled{
         grid-template-columns:1fr;
     }
 }
+
+.inventory-intelligence{
+    margin-top:30px;
+    padding:24px;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.06);
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.section-header h2{
+    margin:0;
+    font-size:22px;
+}
+
+.section-header span{
+    font-size:14px;
+    font-weight:600;
+}
+
+.no-alerts{
+    padding:30px;
+    text-align:center;
+}
+
+.no-alerts h3{
+    margin-bottom:8px;
+}
+
+.no-alerts p{
+    margin:0;
+}
+
+.alert-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.inventory-alert{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1.5fr auto;
+    gap:20px;
+    align-items:center;
+    padding:18px;
+    border:1px solid #eee;
+    border-radius:10px;
+}
+
+.alert-info h3{
+    margin:0 0 5px;
+}
+
+.alert-info p{
+    margin:0;
+    font-size:13px;
+}
+
+.alert-stat{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.alert-stat span{
+    font-size:12px;
+}
+
+.alert-stat strong{
+    font-size:18px;
+}
+
+.alert-status{
+    font-size:12px;
+    font-weight:700;
+    padding:7px 10px;
+    border-radius:6px;
+}

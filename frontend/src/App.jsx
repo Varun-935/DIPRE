@@ -11,6 +11,7 @@ function App(){
     const[totalRevenue,setTotalRevenue]=useState(0)
     const[totalProfit,setTotalProfit]=useState(0)
     const[lowStockProducts,setLowStockProducts]=useState(0)
+    const[inventoryAlerts,setInventoryAlerts]=useState([])
 
     const[productId,setProductId]=useState(1)
     const[competitorPrice,setCompetitorPrice]=useState(50000)
@@ -71,9 +72,10 @@ const loadDashboardData=async()=>{
             throw new Error("Unable to load inventory alerts")
         }
 
-        const alertsData=await alertsResponse.json()
+const alertsData=await alertsResponse.json()
 
-        setLowStockProducts(alertsData.total_alerts)
+setLowStockProducts(alertsData.total_alerts)
+setInventoryAlerts(alertsData.alerts)
 
     }catch(error){
         console.error(error)
@@ -228,6 +230,50 @@ if(page==="sales"){
     <strong>{lowStockProducts}</strong>
     <small>Products requiring attention</small>
 </div>
+</section>
+
+<section className="inventory-intelligence">
+    <div className="section-header">
+        <h2>Inventory Intelligence</h2>
+        <span>{inventoryAlerts.length} Alerts</span>
+    </div>
+
+    {inventoryAlerts.length===0?(
+        <div className="no-alerts">
+            <h3>Inventory is healthy</h3>
+            <p>No products currently require reordering.</p>
+        </div>
+    ):(
+        <div className="alert-list">
+            {inventoryAlerts.map((alert)=>(
+                <div className="inventory-alert" key={alert.product_id}>
+                    <div className="alert-info">
+                        <h3>{alert.product_name}</h3>
+                        <p>Product ID: {alert.product_id}</p>
+                    </div>
+
+                    <div className="alert-stat">
+                        <span>Current Stock</span>
+                        <strong>{alert.current_stock}</strong>
+                    </div>
+
+                    <div className="alert-stat">
+                        <span>Reorder Level</span>
+                        <strong>{alert.reorder_level}</strong>
+                    </div>
+
+                    <div className="alert-stat">
+                        <span>Recommended Reorder</span>
+                        <strong>{alert.recommended_reorder}</strong>
+                    </div>
+
+                    <div className="alert-status">
+                        {alert.status}
+                    </div>
+                </div>
+            ))}
+        </div>
+    )}
 </section>
 
                 <section className="panel">
