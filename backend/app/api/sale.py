@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database.database import get_db
 from app.models.sale import Sale
 from app.models.product import Product
+from app.models.inventory import Inventory
 from app.schemas.sale import SaleCreate,SaleResponse
 
 router=APIRouter(prefix="/sales",tags=["Sales"])
@@ -14,11 +15,21 @@ def create_sale(sale:SaleCreate,db:Session=Depends(get_db)):
     if product is None:
         raise HTTPException(status_code=404,detail="Product not found")
 
+    inventory=db.query(Inventory).filter(Inventory.product_id==sale.product_id).first()
+
+    if inventory is None:
+        raise HTTPException(status_code=404,detail="Inventory not found")
+
+    if inventory.quantity<sale.quantity:
+        raise HTTPException(status_code=400,detail="Insufficient inventory")
+
     new_sale=Sale(
         product_id=sale.product_id,
         quantity=sale.quantity,
         sale_price=sale.sale_price
     )
+
+    inventory.quantity-=sale.quantity
 
     db.add(new_sale)
     db.commit()

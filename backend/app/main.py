@@ -13,6 +13,8 @@ from app.api.demand_prediction import router as demand_prediction_router
 from app.api.pricing_recommendation import router as pricing_recommendation_router
 from app.api.demand import router as demand_router
 from app.api.pricing import router as pricing_router
+from app.api.analytics import router as analytics_router
+from app.api.inventory_alerts import router as inventory_alerts_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -36,6 +38,8 @@ app.include_router(demand_prediction_router)
 app.include_router(pricing_recommendation_router)
 app.include_router(demand_router)
 app.include_router(pricing_router)
+app.include_router(analytics_router)
+app.include_router(inventory_alerts_router)
 
 @app.get("/")
 def home():
