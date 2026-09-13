@@ -1,27 +1,17 @@
 import{useEffect,useState}from"react"
 import"./App.css"
+import Products from"./Products"
+import Inventory from"./Inventory"
+import Sales from"./Sales"
 
 function App(){
     const[productCount,setProductCount]=useState(0)
     const[inventoryCount,setInventoryCount]=useState(0)
-    useEffect(()=>{
-    const loadDashboardData=async()=>{
-        try{
-            const productResponse=await fetch("http://127.0.0.1:8000/products/count")
-            const inventoryResponse=await fetch("http://127.0.0.1:8000/inventory/count")
+    const[totalSales,setTotalSales]=useState(0)
+    const[totalRevenue,setTotalRevenue]=useState(0)
+    const[totalProfit,setTotalProfit]=useState(0)
+    const[lowStockProducts,setLowStockProducts]=useState(0)
 
-            const productData=await productResponse.json()
-            const inventoryData=await inventoryResponse.json()
-
-            setProductCount(productData.count)
-            setInventoryCount(inventoryData.count)
-        }catch(error){
-            console.error(error)
-        }
-    }
-
-    loadDashboardData()
-},[])
     const[productId,setProductId]=useState(1)
     const[competitorPrice,setCompetitorPrice]=useState(50000)
     const[previousSales,setPreviousSales]=useState(80)
@@ -31,9 +21,70 @@ function App(){
     const[promotion,setPromotion]=useState(1)
     const[dayOfWeek,setDayOfWeek]=useState(5)
 
+    const[page,setPage]=useState("dashboard")
+
     const[loading,setLoading]=useState(false)
     const[result,setResult]=useState(null)
     const[error,setError]=useState("")
+
+const loadDashboardData=async()=>{
+    try{
+        const productResponse=await fetch("http://127.0.0.1:8000/products/count")
+
+        if(!productResponse.ok){
+            throw new Error("Unable to load product count")
+        }
+
+        const productData=await productResponse.json()
+        setProductCount(productData.count)
+
+        const inventoryResponse=await fetch("http://127.0.0.1:8000/inventory/")
+
+        if(!inventoryResponse.ok){
+            throw new Error("Unable to load inventory")
+        }
+
+        const inventoryData=await inventoryResponse.json()
+
+        const totalInventory=inventoryData.reduce(
+            (total,item)=>total+item.quantity,
+            0
+        )
+
+        setInventoryCount(totalInventory)
+
+        const analyticsResponse=await fetch("http://127.0.0.1:8000/analytics/summary")
+
+        if(!analyticsResponse.ok){
+            throw new Error("Unable to load analytics")
+        }
+
+        const analyticsData=await analyticsResponse.json()
+
+        setTotalSales(analyticsData.total_sales)
+        setTotalRevenue(analyticsData.total_revenue)
+        setTotalProfit(analyticsData.total_profit)
+
+        const alertsResponse=await fetch("http://127.0.0.1:8000/inventory-intelligence/alerts")
+
+        if(!alertsResponse.ok){
+            throw new Error("Unable to load inventory alerts")
+        }
+
+        const alertsData=await alertsResponse.json()
+
+        setLowStockProducts(alertsData.total_alerts)
+
+    }catch(error){
+        console.error(error)
+    }
+}
+
+useEffect(()=>{
+    if(page==="dashboard"){
+        loadDashboardData()
+    }
+},[page])
 
     const generateRecommendation=async()=>{
         setLoading(true)
@@ -71,8 +122,38 @@ function App(){
         }
     }
 
+    useEffect(()=>{
+    if(page==="dashboard"){
+        generateRecommendation()
+    }
+},[page])
+
+if(page==="products"){
     return(
         <div className="app">
+            <Products onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+if(page==="inventory"){
+    return(
+        <div className="app">
+            <Inventory onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+
+if(page==="sales"){
+    return(
+        <div className="app">
+            <Sales onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+
+    return(
+        <div className="app">
+         
             <header className="header">
                 <div>
                     <h1>DIPRE</h1>
@@ -82,6 +163,15 @@ function App(){
                     <span></span>
                     System Online
                 </div>
+                <button onClick={()=>setPage("products")}>
+    Product Management
+</button>
+<button onClick={()=>setPage("inventory")}>
+    Inventory Management
+</button>
+<button onClick={()=>setPage("sales")}>
+    Sales Management
+</button>
             </header>
 
             <main className="container">
@@ -114,6 +204,30 @@ function App(){
         <strong>{result?result.action:"--"}</strong>
         <small>AI recommendation</small>
     </div>
+
+    <div className="summary-card">
+    <span>Total Sales</span>
+    <strong>{totalSales}</strong>
+    <small>Units sold</small>
+</div>
+
+<div className="summary-card">
+    <span>Total Revenue</span>
+    <strong>₹{totalRevenue.toLocaleString()}</strong>
+    <small>Sales revenue</small>
+</div>
+
+<div className="summary-card">
+    <span>Total Profit</span>
+    <strong>₹{totalProfit.toLocaleString()}</strong>
+    <small>Estimated profit</small>
+</div>
+
+<div className="summary-card">
+    <span>Low Stock</span>
+    <strong>{lowStockProducts}</strong>
+    <small>Products requiring attention</small>
+</div>
 </section>
 
                 <section className="panel">
