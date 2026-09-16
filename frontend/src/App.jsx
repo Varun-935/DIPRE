@@ -3,6 +3,7 @@ import"./App.css"
 import Products from"./Products"
 import Inventory from"./Inventory"
 import Sales from"./Sales"
+import Analytics from"./Analytics"
 
 function App(){
     const[productCount,setProductCount]=useState(0)
@@ -153,6 +154,14 @@ if(page==="sales"){
     )
 }
 
+if(page==="analytics"){
+    return(
+        <div className="app">
+            <Analytics onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+
     return(
         <div className="app">
          
@@ -173,6 +182,9 @@ if(page==="sales"){
 </button>
 <button onClick={()=>setPage("sales")}>
     Sales Management
+</button>
+<button onClick={()=>setPage("analytics")}>
+    Analytics
 </button>
             </header>
 
