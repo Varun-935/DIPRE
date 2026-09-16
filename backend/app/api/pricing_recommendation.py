@@ -33,6 +33,26 @@ def create_pricing_recommendation(recommendation:PricingRecommendationCreate,db:
 def get_pricing_recommendations(db:Session=Depends(get_db)):
     return db.query(PricingRecommendation).all()
 
+@router.get("/history")
+def get_pricing_history(db:Session=Depends(get_db)):
+    recommendations=db.query(PricingRecommendation).order_by(
+        PricingRecommendation.created_at.desc()
+    ).all()
+
+    return[
+        {
+            "id":item.id,
+            "product_id":item.product_id,
+            "current_price":float(item.current_price),
+            "recommended_price":float(item.recommended_price),
+            "action":item.action,
+            "expected_profit":float(item.expected_profit) if item.expected_profit is not None else 0,
+            "reason":item.reason,
+            "created_at":item.created_at
+        }
+        for item in recommendations
+    ]
+
 @router.get("/{recommendation_id}",response_model=PricingRecommendationResponse)
 def get_pricing_recommendation(recommendation_id:int,db:Session=Depends(get_db)):
     recommendation=db.query(PricingRecommendation).filter(PricingRecommendation.id==recommendation_id).first()

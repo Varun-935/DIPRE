@@ -4,6 +4,7 @@ import Products from"./Products"
 import Inventory from"./Inventory"
 import Sales from"./Sales"
 import Analytics from"./Analytics"
+import PricingHistory from"./PricingHistory"
 
 function App(){
     const[productCount,setProductCount]=useState(0)
@@ -125,11 +126,6 @@ useEffect(()=>{
         }
     }
 
-    useEffect(()=>{
-    if(page==="dashboard"){
-        generateRecommendation()
-    }
-},[page])
 
 if(page==="products"){
     return(
@@ -142,6 +138,14 @@ if(page==="inventory"){
     return(
         <div className="app">
             <Inventory onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+
+if(page==="pricing-history"){
+    return(
+        <div className="app">
+            <PricingHistory onBack={()=>setPage("dashboard")}/>
         </div>
     )
 }
@@ -185,6 +189,9 @@ if(page==="analytics"){
 </button>
 <button onClick={()=>setPage("analytics")}>
     Analytics
+</button>
+<button onClick={()=>setPage("pricing-history")}>
+    Pricing History
 </button>
             </header>
 
