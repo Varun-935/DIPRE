@@ -1,0 +1,142 @@
+.ml-insights-page{
+    padding:30px;
+}
+
+.ml-insights-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.ml-insights-header h1{
+    margin:0;
+    font-size:32px;
+    color:#1e3a5f;
+}
+
+.ml-insights-header p{
+    margin:8px 0 0;
+    color:#64748b;
+}
+
+.back-button{
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    background:#1e3a5f;
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.prototype-note{
+    padding:18px 22px;
+    background:#eff6ff;
+    border-radius:10px;
+    margin-bottom:25px;
+}
+
+.prototype-note strong{
+    color:#1e3a5f;
+}
+
+.prototype-note p{
+    margin:6px 0 0;
+    color:#475569;
+}
+
+.model-summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.model-card{
+    background:white;
+    padding:22px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.model-card span{
+    display:block;
+    color:#64748b;
+    font-size:14px;
+}
+
+.model-card strong{
+    display:block;
+    margin:8px 0;
+    font-size:28px;
+    color:#1e3a5f;
+}
+
+.model-card small{
+    color:#64748b;
+}
+
+.chart-panel,
+.table-panel{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.chart-panel h2,
+.table-panel h2{
+    margin-top:0;
+    color:#1e3a5f;
+}
+
+.chart-wrapper{
+    position:relative;
+    height:350px;
+}
+
+.table-container{
+    overflow-x:auto;
+}
+
+.table-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table-panel th{
+    padding:15px;
+    text-align:left;
+    background:#f1f5f9;
+    color:#334155;
+}
+
+.table-panel td{
+    padding:15px;
+    border-top:1px solid #e2e8f0;
+    color:#475569;
+}
+
+.table-panel tr:hover{
+    background:#f8fafc;
+}
+
+@media(max-width:800px){
+    .model-summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:500px){
+    .model-summary{
+        grid-template-columns:1fr;
+    }
+
+    .ml-insights-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+}

@@ -1,0 +1,168 @@
+.decision-page{
+    padding:30px;
+}
+
+.decision-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.decision-header h1{
+    margin:0;
+    font-size:32px;
+    color:#1e3a5f;
+}
+
+.decision-header p{
+    margin:8px 0 0;
+    color:#64748b;
+}
+
+.back-button{
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    background:#1e3a5f;
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.decision-intro,
+.rules-section,
+.profit-section{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.decision-intro h2,
+.rules-section h2,
+.profit-section h2{
+    margin-top:0;
+    color:#1e3a5f;
+}
+
+.decision-intro p,
+.profit-section p{
+    color:#475569;
+    line-height:1.6;
+}
+
+.pipeline{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.pipeline-card{
+    width:min(750px,100%);
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+.pipeline-number{
+    width:38px;
+    height:38px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    background:#1e3a5f;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.pipeline-card h3{
+    margin:8px 0;
+    color:#1e3a5f;
+}
+
+.pipeline-card p{
+    margin:0;
+    color:#64748b;
+    line-height:1.5;
+}
+
+.pipeline-arrow{
+    font-size:28px;
+    color:#64748b;
+    padding:8px;
+}
+
+.rule-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.rule-card{
+    padding:22px;
+    border-radius:12px;
+}
+
+.rule-card p{
+    line-height:1.5;
+    color:#475569;
+}
+
+.rule-title{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.raise{
+    background:#dcfce7;
+}
+
+.raise .rule-title{
+    color:#166534;
+}
+
+.lower{
+    background:#fee2e2;
+}
+
+.lower .rule-title{
+    color:#991b1b;
+}
+
+.hold{
+    background:#fef3c7;
+}
+
+.hold .rule-title{
+    color:#92400e;
+}
+
+.formula{
+    padding:20px;
+    background:#f1f5f9;
+    border-radius:8px;
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+    color:#1e3a5f;
+}
+
+@media(max-width:800px){
+    .rule-grid{
+        grid-template-columns:1fr;
+    }
+
+    .decision-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+}

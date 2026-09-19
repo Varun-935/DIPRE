@@ -346,3 +346,45 @@ button:disabled{
     padding:7px 10px;
     border-radius:6px;
 }
+
+.recommendation-product{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:15px 0 20px;
+    padding:14px 18px;
+    background:#f1f5f9;
+    border-radius:10px;
+}
+
+.recommendation-product strong{
+    font-size:20px;
+    color:#1e3a5f;
+}
+
+.recommendation-product span{
+    color:#64748b;
+    font-size:14px;
+}
+
+.pricing-action{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:20px;
+    font-size:24px;
+}
+
+.pricing-action.raise{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.pricing-action.hold{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.pricing-action.lower{
+    background:#fee2e2;
+    color:#991b1b;
+}

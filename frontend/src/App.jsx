@@ -5,9 +5,12 @@ import Inventory from"./Inventory"
 import Sales from"./Sales"
 import Analytics from"./Analytics"
 import PricingHistory from"./PricingHistory"
+import MLInsights from"./MLInsights"
+import DecisionLogic from"./DecisionLogic"
 
 function App(){
     const[productCount,setProductCount]=useState(0)
+    const[products,setProducts]=useState([])
     const[inventoryCount,setInventoryCount]=useState(0)
     const[totalSales,setTotalSales]=useState(0)
     const[totalRevenue,setTotalRevenue]=useState(0)
@@ -40,6 +43,15 @@ const loadDashboardData=async()=>{
 
         const productData=await productResponse.json()
         setProductCount(productData.count)
+
+        const productsResponse=await fetch("http://127.0.0.1:8000/products/")
+
+if(!productsResponse.ok){
+    throw new Error("Unable to load products")
+}
+
+const productsData=await productsResponse.json()
+setProducts(productsData)
 
         const inventoryResponse=await fetch("http://127.0.0.1:8000/inventory/")
 
@@ -150,6 +162,22 @@ if(page==="pricing-history"){
     )
 }
 
+if(page==="ml-insights"){
+    return(
+        <div className="app">
+            <MLInsights onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+
+if(page==="decision-logic"){
+    return(
+        <div className="app">
+            <DecisionLogic onBack={()=>setPage("dashboard")}/>
+        </div>
+    )
+}
+
 if(page==="sales"){
     return(
         <div className="app">
@@ -192,6 +220,12 @@ if(page==="analytics"){
 </button>
 <button onClick={()=>setPage("pricing-history")}>
     Pricing History
+</button>
+<button onClick={()=>setPage("ml-insights")}>
+    ML Model Insights
+</button>
+<button onClick={()=>setPage("decision-logic")}>
+    Decision Logic
 </button>
             </header>
 
@@ -403,6 +437,13 @@ if(page==="analytics"){
                     <section className="results">
                         <h3>DIPRE Recommendation</h3>
 
+                        <div className="recommendation-product">
+    <strong>
+{products.find(product=>Number(product.id)===Number(result.product_id))?.name||"Product"}
+    </strong>
+    <span>Product ID: #{result.product_id}</span>
+</div>
+
                         <div className="cards">
                             <div className="card">
                                 <span>Predicted Demand</span>
@@ -429,7 +470,9 @@ if(page==="analytics"){
                         <div className="recommendation">
                             <div>
                                 <span>Pricing Action</span>
-                                <h2>{result.action}</h2>
+                                <h2 className={`pricing-action ${result.action.toLowerCase()}`}>
+    {result.action}
+</h2>
                             </div>
 
                             <div>
