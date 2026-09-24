@@ -11,6 +11,7 @@ function Products({onBack}){
     const[loading,setLoading]=useState(false)
     const[message,setMessage]=useState("")
     const[error,setError]=useState("")
+    const[editingProduct,setEditingProduct]=useState(null)
 
     const loadProducts=async()=>{
         try{
@@ -66,6 +67,74 @@ function Products({onBack}){
             setLoading(false)
         }
     }
+
+    const editProduct=async()=>{
+    setLoading(true)
+    setMessage("")
+    setError("")
+
+    try{
+        const response=await fetch(`http://127.0.0.1:8000/products/${editingProduct.id}`,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name:name,
+                category:category,
+                brand:brand||null,
+                cost_price:Number(costPrice),
+                selling_price:Number(sellingPrice)
+            })
+        })
+
+        if(!response.ok){
+            throw new Error("Unable to update product")
+        }
+
+        setEditingProduct(null)
+        setName("")
+        setCategory("")
+        setBrand("")
+        setCostPrice("")
+        setSellingPrice("")
+        setMessage("Product updated successfully")
+        await loadProducts()
+    }catch(error){
+        setError(error.message)
+    }finally{
+        setLoading(false)
+    }
+}
+
+const deleteProduct=async(productId)=>{
+    const confirmed=window.confirm("Are you sure you want to delete this product?")
+
+    if(!confirmed){
+        return
+    }
+
+    setLoading(true)
+    setMessage("")
+    setError("")
+
+    try{
+        const response=await fetch(`http://127.0.0.1:8000/products/${productId}`,{
+            method:"DELETE"
+        })
+
+        if(!response.ok){
+            throw new Error("Unable to delete product")
+        }
+
+        setMessage("Product deleted successfully")
+        await loadProducts()
+    }catch(error){
+        setError(error.message)
+    }finally{
+        setLoading(false)
+    }
+}
 
 return(
     <div className="products-page">
@@ -129,13 +198,13 @@ return(
                 />
             </div>
 
-            <button
-                className="add-product-button"
-                onClick={addProduct}
-                disabled={loading}
-            >
-                {loading?"Adding...":"Add Product"}
-            </button>
+<button
+    className="add-product-button"
+    onClick={editingProduct?editProduct:addProduct}
+    disabled={loading}
+>
+    {loading?(editingProduct?"Updating...":"Adding..."):(editingProduct?"Update Product":"Add Product")}
+</button>
         </div>
 
         {message&&(
@@ -181,6 +250,31 @@ return(
                         <div className="product-detail">
                             Price: ₹{Number(product.selling_price).toLocaleString()}
                         </div>
+
+<button
+    className="edit-product-button"
+    onClick={()=>{
+        setEditingProduct(product)
+        setName(product.name)
+        setCategory(product.category)
+        setBrand(product.brand||"")
+        setCostPrice(product.cost_price)
+        setSellingPrice(product.selling_price)
+        setMessage("")
+        setError("")
+    }}
+>
+    Edit
+</button>
+
+<button
+    className="delete-product-button"
+    onClick={()=>deleteProduct(product.id)}
+    disabled={loading}
+>
+    Delete
+</button>
+
                     </div>
                 ))
             )}

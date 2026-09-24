@@ -1,21 +1,24 @@
-from pydantic import BaseModel,Field
-from decimal import Decimal
-from datetime import datetime
+from pydantic import BaseModel
 
 class ProductCreate(BaseModel):
-    name:str=Field(min_length=1,max_length=200)
-    category:str=Field(min_length=1,max_length=100)
+    name:str
+    category:str
     brand:str|None=None
-    cost_price:Decimal=Field(gt=0)
-    selling_price:Decimal=Field(gt=0)
+    cost_price:float
+    selling_price:float
+
+class ProductUpdate(BaseModel):
+    name:str
+    category:str
+    brand:str|None=None
+    cost_price:float
+    selling_price:float
 
 class ProductResponse(BaseModel):
     id:int
     name:str
     category:str
     brand:str|None
-    cost_price:Decimal
-    selling_price:Decimal
-    created_at:datetime
-
+    cost_price:float
+    selling_price:float
     model_config={"from_attributes":True}
